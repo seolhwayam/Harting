@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Download</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <script>
+      window.onload = async function() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const index = params.get('index'); // URL에서 index 파라미터 가져오기
+
+          const res = await axios.get("http://localhost:3000/NoteBoardDetail", {
+          params: { index: this.NoteIndex }, // NoteIndex를 객체 안에 넣어 전달
+        })
+        .then((res) => {
+          console.log(res);
+          //window.location = `data:image/jpeg:base64, ${res.data.data}`
+        })
+        .catch((error) => {
+          console.erro
+        });
+
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "downloaded_file"); // 실제 파일 이름을 설정
+          document.body.appendChild(link);
+          link.click(); // 링크 클릭을 통한 파일 다운로드
+
+          // 파일 다운로드 이후 팝업 창 닫기
+          window.close();
+        }
+        catch (error) {
+          console.error("다운로드 오류:", error);
+        }
+      };
+    </script>
+</body>
+</html>
