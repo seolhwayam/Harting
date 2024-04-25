@@ -53,7 +53,7 @@
                 나의 실력에 맞는 레벨을 선택해서 문제를 풀어보세요.
                 <br />한단계씩 성장하는 나를 보게 될거예요!
               </p>
-              <button type="button" class="btn btn-outline-success">
+              <button type="button" class="btn btn-outline-success" @click="goQuizList">
                 문제풀러가기
               </button>
             </div>
@@ -321,7 +321,11 @@ export default {
       this.$router.push('/NoteBoard');
     },
     goRanking(){
-      this.$router.push('/Ranking');
+      if(this.$store.getters.getKakaoUserInfo == null){
+            alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
+             this.$router.push('/Ranking');
+        }
     },
     goNoticeBoard(){
       this.$router.push('/NoticeBoard');
@@ -340,6 +344,9 @@ export default {
       // 선택된 랜덤한 텍스트를 randomTip 데이터에 저장합니다.
       this.randomTip = this.tips[randomIndex];
     },
+    goQuizList(){
+      this.$router.push('QuizList');
+    }
   },
 };
 </script>

@@ -1,11 +1,9 @@
 <template>
 
-    <!-- 나머지 앱 컴포넌트 -->
-    <router-view></router-view>
 <center>
   <br><br>
 <div class="ranking-title-container">
-  <h1 class="ranking-title">정보 공유방</h1>
+  <h1 class="ranking-title">나만의 족보</h1>
 </div> <br>
   </center>
   <div class="board-list">
@@ -25,7 +23,7 @@
       </thead>
       <tbody>
         <tr v-for="(li, index) in list" :key="index" @click="NoteDetail(li.studyindex)">
-          <td>{{ index }}</td>
+          <td>{{ index+1 }}</td>
           <td>{{ li.title }}</td>
           <td>{{ li.nickname }}</td>
           <td>{{ li.date.substr(0, 10) }}</td>
@@ -34,6 +32,7 @@
       </tbody>
     </table>
   </div>
+
   <nav aria-label="..." class="d-flex justify-content-center">
     <ul class="pagination">
       <li class="page-item disabled">
@@ -50,13 +49,13 @@
     </ul>
   </nav>
 </template>
+
 <script>
 import axios from 'axios'
 
 export default {
   name: 'GesipanBoard',
    components: {
- 
   },
   data() {
     return {
@@ -95,49 +94,66 @@ export default {
           console.error('Error fetching NoteBoardList:', error);
         });
         console.log(new Date())
+        
     },
     fnWrite() {
       this.$router.push('/writeNoteBoard');
     },
     NoteDetail(index) {
       this.$store.commit('setNoteIndex', index);
-      alert(index);
       this.$router.push('/DetailNoteBoard');
     }
   }
 }
 </script>
-<style scoped>
+
+<style>
+
+
 .board-list {
-    width: 768px;
+    width: 1000px;
     margin: auto;
+      font-size: 20px; /* 테이블 내부 텍스트 크기 조정 */
 }
+
 .board-detail {
     width: 768px;
     margin: auto;
     text-align: left;
 }
+
 .board-contents {
     padding: 12px 8px;
     border-bottom: 1px solid #eee;
 }
+
 .common-buttons {
     padding: 8px;
     text-align: right;
 }
 .ranking-title-container {
     display: block;
-    border-bottom: 3px solid #3DA142; /* 언더라인 스타일 설정 */
+    border-bottom: 3px solid #3da142; /* 언더라인 스타일 설정 */
     margin-bottom: -2px; /* 언더라인과의 간격 제거 */
     width: 2000px; /* 너비 설정 */
     text-align: left; /* 텍스트 좌측 정렬 */
 }
 .ranking-title {
-  font-size: 48px; /* 글씨 크기를 48px로 설정 */
-  color: #333; /* 글씨 색상을 어두운 회색으로 설정 */
-  text-align: center; /* 글씨를 가운데 정렬 */
-  margin-top: 0px; /* 상단 마진 조정 */
-  margin-bottom: 30px; /* `   ` 하단 마진 조정 */
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); /* 글씨에 그림자 효과 추가 */
+    font-size: 48px; /* 글씨 크기를 48px로 설정 */
+    color: #333; /* 글씨 색상을 어두운 회색으로 설정 */
+    margin-top: 0px; /* 상단 마진 조정 */
+    margin-bottom: 10px; /* 하단 마진 조정 */
+    text-align: left; /* 텍스트 좌측 정렬 */
+     padding-left: 80px; /* 좌측 여백 설정 */
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); /* 글씨에 그림자 효과 추가 */
 }
+.pagination {
+    font-size: 20px; /* 페이지네이션의 글꼴 크기 조정 */
+    
+}
+
+.page-link {
+    padding: 10px; /* 페이지 링크의 안쪽 여백 추가 */
+}
+
 </style>

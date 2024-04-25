@@ -76,6 +76,26 @@ const routes = [
     name: 'MainHome',
     component: MainHome
   },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/admin.vue')
+  },
+  {
+    path: '/NoticeBoardDetail',
+    name: 'NoticeBoardDetail',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/NoticeBoardDetail.vue')
+  },
+  {
+    path: '/QuizList',
+    name: 'QuizList',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/QuizList.vue')
+  },
+  {
+    path: '/QuizPage',
+    name: 'QuizPage',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/QuizPage.vue')
+  },
   
 ]
 const router = createRouter({

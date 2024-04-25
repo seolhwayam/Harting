@@ -14,6 +14,7 @@
 </template>
 <script>
 import { Calendar } from "v-calendar";
+import axios from "axios";
 export default {
   name: "AttendanceCalendar",
   components: {
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       attendance: {},
+      upPoint:''
     };
   },
   computed: {
@@ -55,8 +57,32 @@ export default {
           this.attendance[dateString] ? "출석입니다!" : "결석입니다!"
         }`
       );
+      this.getPoint();
+      
+
     },
-  },
+    async getPoint(){  // 증가할 점수 가져오기
+      await axios.get("http://localhost:3000/getSystem_settings")
+      .then(res =>{
+        let data = res.data.data;
+        this.upPoint = data[0].upPointCheck; //업데이트할 점수 보관
+      })
+      this.updatePoint();
+    },
+    async updatePoint(){
+        // 점수 업데이트 하기
+        let obj = {};
+        obj.email= this.$store.getters.getKakaoUserInfo.email;
+        obj.upPoint=this.upPoint;
+        await axios.post("http://localhost:3000/upPoint",obj)
+        .then(res =>{
+            console.log(res.data);
+        })
+        alert("출석 포인트" +  this.upPoint + "를 획득하였습니다!")
+    }
+
+    }
+  
 };
 </script>
 <style scoped>

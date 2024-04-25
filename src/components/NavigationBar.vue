@@ -32,8 +32,28 @@
 
         <!-- 로그인 버튼 -->
         <div>
-          <button v-if="!user.nickname" @click="kakaoLogin()" class="btn btn-outline-success">로그인하기</button>
+          <button v-if="this.$store.getters.getKakaoUserInfo == null" @click="kakaoLogin()" class="btn btn-outline-success">로그인하기</button>
           <button v-else @click="kakaoLogout()" class="btn btn-outline-success">로그아웃</button>
+          <button  type="button" class="btn btn-outline-success"  > <i class="fas fa-cog"></i>  설정 </button>
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
       </div> <!-- 추가된 닫는 div -->
 
@@ -54,7 +74,7 @@
             <!--메서드 구현필요-->
             <i class="fas fa-home icon-spacing"></i> <span>홈화면</span>
           </div>
-          <div class="sidebar-item" @click="toggleSection('test')">
+          <div class="sidebar-item" @click="goQuizList('test')">
             <!--메서드 구현필요-->
            <i class="fas fa-graduation-cap icon-spacing"></i> <span>코딩문제</span>
           </div>
@@ -108,7 +128,7 @@ const getKakaoToken = async (code) => {
     const data = {
       grant_type: "authorization_code",
       client_id: "9fa381a957d03440e1eb215d79f4814f", // REST API 키
-      redirect_uri: "http://localhost:8080/MainHome",
+      redirect_uri: "http://localhost:8080",
       code: code,
     };
 
@@ -155,6 +175,7 @@ export default {
       user: {}, //현재 유저 정보
       userInfo:{}, //db에서 가져온 유저 정보
       isSidebarVisible: false, // 사이드바 표시 상태
+       msg:''
     };
   },
    created() {
@@ -167,8 +188,16 @@ export default {
     }
   },
   methods: {
+    goQuizList(){
+    this.$router.push('/QuizList');
+    },
     goRanking(){
-      this.$router.push('/Ranking');
+        if(this.$store.getters.getKakaoUserInfo == null){
+            alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
+             this.$router.push('/Ranking');
+        }
+     
     },
     goNoteBoard(){
       this.$router.push('/NoteBoard');
@@ -208,7 +237,7 @@ export default {
     // https://developers.kakao.com/docs/latest/ko/kakaologin/js#login
     kakaoLogin() {
       window.Kakao.Auth.authorize({
-        redirectUri: "http://localhost:8080/",
+        redirectUri: "http://localhost:8080",
       });
     },
 
@@ -253,26 +282,44 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+        this.$router.push('/');
     },
      login_log() {
       this.form = {
         email : this.user.email,
       };
-      axios.post('http://localhost:3000/LoginLog', this.form)
+       axios.post('http://localhost:3000/LoginLog', this.form)
         .then((res) => {
+          if(this.user.email == "oo5450@naver.com"){
+              this.$router.push('/admin');
+          }else{
           if (res.data.success) {
             if(this.userCheck()==false){
                this.userInsert();
-            }
+          }         
             alert('로그인 되었습니다.');
+            this.userMsg();
             this.fnList();
+            this.$router.push('/');
           } else {
             alert("로그인에 실패하였습니다.");
           }
+          }
+          
         })
         .catch((err) => {
           console.log(err);
         });
+        axios.get("http://localhost:3000/getSystem_settings")
+        .then(res =>{
+             let settings = res.data.data;
+             this.$store.commit('setupPointNote', settings[0].upPointNote); //정보넣기
+             this.$store.commit('setupPointLeverUp', settings[0].upPointLevelUp); //정보넣기
+             this.$store.commit('setupPointCheck', settings[0].upPointCheck); //정보넣기
+             this.$store.commit('setupScore', settings[0].upScore); //정보넣기
+             this.msg = settings[0].msg;
+
+        })
     },
     userInsert(){ 
         let obj = {};
