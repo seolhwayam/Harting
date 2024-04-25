@@ -1,12 +1,5 @@
 <template>
-  <div>
-    <NavigationBar />
-    <!-- 나머지 앱 컴포넌트 -->
-    <router-view></router-view>
-  </div>
-  <div class="new-underline"></div>
 
-  <div>
     <!-- Banner Section -->
     <div
       class="jumbotron jumbotron-fluid"
@@ -96,9 +89,11 @@
                 <br />
                 큭큭 거리다보면 어느새 완강!
               </p>
-              <button type="button" class="btn btn-outline-success">
-                영상보러가기
-              </button>
+              <a href="https://www.youtube.com/@MasterNKS" target="_blank">
+          <button type="button" class="btn btn-outline-success">
+            영상보러가기
+          </button>
+              </a>
             </div>
             <div
               data-aos="fade-right"
@@ -119,7 +114,7 @@
       <br /><br />
       <br /><br />
       <div class="underline"></div>
-      <p class="contents_title">Servies</p>
+      <p class="contents_title">Service</p>
       <p class="contents_subtitle">별별스터디 즐기는 방법</p>
       <br /><br />
       <div class="row">
@@ -134,8 +129,8 @@
             src="https://www.quizn.show/webdata/images/s_icon01.png"
             alt="Anti-spam"
             class="mx-auto"
-          />
-          <h4>Sing up</h4>
+          /> <br>
+          <h4>Sign up</h4>
           <p>무료로 회원가입 후 언제든지 이용해보세요.</p>
         </div>
         <div
@@ -149,7 +144,7 @@
             src="https://www.quizn.show/webdata/images/s_icon02.png"
             alt="Phishing Detect"
             class="mx-auto"
-          />
+          /> <br>
           <h4>Play</h4>
           <p>코딩을 게임처럼 퀴즈로 즐겨보세요.</p>
         </div>
@@ -164,7 +159,7 @@
             src="https://www.quizn.show/webdata/images/s_icon03.png"
             alt="Smart Scan"
             class="mx-auto"
-          />
+          /> <br>
           <h4>Share</h4>
           <p>별별스터디를 친구에게 공유해보세요.</p>
         </div>
@@ -173,17 +168,17 @@
       <br /><br />
       <br /><br />
       <div class="underline"></div>
-      <p class="contents_title">Contests</p>
+      <p class="contents_title">Content</p>
       <p class="contents_subtitle">별별스터디 알차게 즐기기</p>
       <div class="card-container">
         <div class="row justify-content-center">
           <div class="col-md-4" data-aos="fade-up">
             <div class="card card-height" style="width: 18rem">
-              <img src="@/assets/맞춤법.jpg" class="card-img-top" alt="..." />
+              <img src="@/assets/공지사항.png" class="card-img-top" alt="..." />
               <div class="card-body text-center">
                 <h5 class="card-title">공지사항</h5>
-                <p class="card-text">ㅇㅇㅇㅇㅇ</p>
-                <button type="button" class="btn btn-outline-success">
+                <p class="card-text">중요한 내용 공지</p>
+                <button type="button" class="btn btn-outline-success" @click="goNoticeBoard">
                   공지사항보기
                 </button>
               </div>
@@ -191,11 +186,11 @@
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="card card-height" style="width: 18rem">
-              <img src="@/assets/한국사.png" class="card-img-top" alt="..." />
+              <img src="@/assets/랭킹.png" class="card-img-top" alt="..." />
               <div class="card-body text-center">
-                <h5 class="card-title">나의랭킹</h5>
+                <h5 class="card-title">나의 랭킹</h5>
                 <p class="card-text">지금 나의 위치는?</p>
-                <button type="button" class="btn btn-outline-success">
+                <button type="button" class="btn btn-outline-success" @click="goRanking">
                   랭킹보러가기
                 </button>
               </div>
@@ -203,11 +198,11 @@
           </div>
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="card card-height" style="width: 18rem">
-              <img src="@/assets/영단어.png" class="card-img-top" alt="..." />
+              <img src="@/assets/족보.png" class="card-img-top" alt="..." />
               <div class="card-body text-center">
                 <h5 class="card-title">나만의 족보</h5>
                 <p class="card-text">나만알기 아쉬운 꿀팁공유</p>
-                <button type="button" class="btn btn-outline-success">
+                <button type="button" class="btn btn-outline-success" @click="goNoteBoard">
                   족보보러가기
                 </button>
               </div>
@@ -240,7 +235,7 @@
           >
           <h2 class="font-weight-bold">출석체크</h2>
           <p class="my-4">매일매일 출석체크하고 포인트 챙기기!</p>
-          <button type="button" class="btn btn-outline-success">
+          <button type="button" class="btn btn-outline-success" @click="goCalender">
             출석체크하기
           </button>
         </div>
@@ -256,12 +251,14 @@
             alt="Anti-spam"
             class="mx-auto"
             style="width: 100px; height: auto;"
-          />
+          /><br>
           <h2 class="font-weight-bold">오늘의 운세</h2>
           <p class="my-4">머리식힐겸 나의 운세 확인하기!</p>
+          <a href="https://www.unsin.co.kr/unse/free/todayline/form?linenum=01&sid=tunse" target="_blank">
           <button type="button" class="btn btn-outline-success">
-            족보보러가기
+            운세보러가기
           </button>
+          </a>
         </div>
       </div>
     </div>
@@ -291,97 +288,17 @@
         </div>
       </div>
     </div>
-
-    <!-- Contact Section -->
-    <div
-      class="jumbotron jumbotron-fluid"
-      id="contact"
-      style="background-image: url('/contact-bk.jpg')"
-    >
-      <div class="container my-5">
-        <div class="row justify-content-between">
-          <div class="col-md-6 text-white">
-            <h2 class="font-weight-bold">Contact Us</h2>
-            <p class="my-4">
-              문의사항이나 개선사항이 있으신가요?
-              <br />
-              언제든지 말씀해주세요. 별별스터디의 귀는 언제나 열려있습니다.
-            </p>
-            <ul class="list-unstyled">
-              <li>이메일: starstar-study@google.com</li>
-              <li>전화: 1588-9999</li>
-              <li>주소: 서울 서초구 서초대로 74길 33</li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <form>
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="name">이름</label>
-                  <input type="name" class="form-control" id="name" />
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="Email">이메일</label>
-                  <input type="email" class="form-control" id="Email" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="message">문의/개선내용</label>
-                <textarea class="form-control" id="message" rows="3"></textarea>
-              </div>
-              <button
-                type="submit"
-                class="btn font-weight-bold atlas-cta atlas-cta-wide cta-green my-3"
-              >
-                보내기
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Copyright Section -->
-    <div class="jumbotron jumbotron-fluid" id="copyright">
-      <div class="container">
-        <div class="row justify-content-between">
-          <div
-            class="col-md-6 text-white align-self-center text-center text-md-left my-2"
-          >
-            Copyright © 2024 Harting.
-          </div>
-          <div
-            class="col-md-6 align-self-center text-center text-md-right my-2"
-            id="social-media"
-          >
-            <a href="#" class="d-inline-block text-center ml-2">
-              <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="d-inline-block text-center ml-2">
-              <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="d-inline-block text-center ml-2">
-              <i class="fa fa-medium" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="d-inline-block text-center ml-2">
-              <i class="fa fa-linkedin" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import "aos/dist/aos.css";
 import "aos";
-import NavigationBar from "@/components/NavigationBar.vue";
+
 
 export default {
   name:'MainHome',
   components: {
-   NavigationBar, 
+  
   },
   data() {
     return {
@@ -400,6 +317,18 @@ export default {
     this.getRandomTip(); // 컴포넌트가 마운트될 때마다 랜덤한 텍스트를 설정합니다.
   },
   methods: {
+    goNoteBoard(){
+      this.$router.push('/NoteBoard');
+    },
+    goRanking(){
+      this.$router.push('/Ranking');
+    },
+    goNoticeBoard(){
+      this.$router.push('/NoticeBoard');
+    },
+    goCalender(){
+ this.$router.push('/calender');
+    },
     initAOS() {
       import("aos").then((AOS) => {
         AOS.init();

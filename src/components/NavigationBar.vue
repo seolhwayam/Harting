@@ -13,10 +13,10 @@
         </button>
 
         <!-- 로고 -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="#" @click="goMainHome">
           <img
             src="@/assets/logo.png"
-            alt="노랑펜 로고"
+            alt="별별스터디 로고"
             width="60"
             height="80"
             class="d-inline-block align-text-top"
@@ -50,7 +50,7 @@
         <!-- 사이드바 내부 섹션 -->
         <div class="sidebar-section">
           <h3>전체 메뉴</h3>
-          <div class="sidebar-item" @click="toggleSection('home')">
+          <div class="sidebar-item" @click="goMainHome('home')">
             <!--메서드 구현필요-->
             <i class="fas fa-home icon-spacing"></i> <span>홈화면</span>
           </div>
@@ -58,31 +58,37 @@
             <!--메서드 구현필요-->
            <i class="fas fa-graduation-cap icon-spacing"></i> <span>코딩문제</span>
           </div>
+          <a href="https://www.youtube.com/@MasterNKS" target="_blank" class="no-style">
           <div class="sidebar-item" @click="toggleSection('video')">
             <!--메서드 구현필요-->
            <i class="fas fa-video icon-spacing"></i><span>교육영상</span>
-          </div>
-          <div class="sidebar-item" @click="toggleSection('notice')">
+          </div> </a>
+          <div class="sidebar-item" @click="goNoticeBoard('notice')">
             <!--메서드 구현필요-->
            <i class="fas fa-bullhorn icon-spacing"></i> <span>공지사항</span>
           </div>
-          <div class="sidebar-item" @click="toggleSection('rank')">
+          <div class="sidebar-item" @click="goRanking('rank')">
             <!--메서드 구현필요-->
             <i class="fas fa-trophy icon-spacing"></i> <span>나의랭킹</span>
           </div>
-          <div class="sidebar-item icon-spacing" @click="toggleSection('tip')">
+          <div class="sidebar-item icon-spacing" @click="goNoteBoard('tip')">
             <!--메서드 구현필요-->
            <i class="fas fa-book icon-spacing"></i> <span>나만의족보</span>
           </div>
-          <div class="sidebar-item" @click="toggleSection('check')">
+          <div class="sidebar-item" @click="goCalender('check')">
             <!--메서드 구현필요-->
             <i class="fas fa-check icon-spacing"></i> <span>출석체크</span>
           </div>
+          <a href="https://www.unsin.co.kr/unse/free/todayline/form?linenum=01&sid=tunse" target="_blank" class="no-style">
           <div class="sidebar-item" @click="toggleSection('luck')">
             <!--메서드 구현필요-->
           <i class="fas fa-magic icon-spacing"></i><span>오늘의 운세</span>
+          </div> </a>
+          <div class="sidebar-item" @click="goquizNext('test')">
+            <!--메서드 구현필요-->
+          <i class="fas fa-star icon-spacing"></i><span>실험실</span>
           </div>
-          <div class="sidebar-item" @click="toggleSection('setting')">
+          <div class="sidebar-item" @click="gomode('setting')">
            <i class="fas fa-cog icon-spacing"></i><span>설정</span>
           </div>
         </div>
@@ -161,6 +167,27 @@ export default {
     }
   },
   methods: {
+    goRanking(){
+      this.$router.push('/Ranking');
+    },
+    goNoteBoard(){
+      this.$router.push('/NoteBoard');
+    },
+    goquizNext(){
+       this.$router.push('/quizNext');
+    },
+    goMainHome(){
+      this.$router.push('/');
+    },
+    gomode(){
+      this.$router.push('/mode');
+    },
+    goNoticeBoard(){
+      this.$router.push('/NoticeBoard');
+    },
+    goCalender(){
+ this.$router.push('/calender');
+    },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
@@ -181,7 +208,7 @@ export default {
     // https://developers.kakao.com/docs/latest/ko/kakaologin/js#login
     kakaoLogin() {
       window.Kakao.Auth.authorize({
-        redirectUri: "http://localhost:8080/MainHome",
+        redirectUri: "http://localhost:8080/",
       });
     },
 
@@ -196,7 +223,7 @@ export default {
       console.log(data);
       window.Kakao.Auth.setAccessToken(data.access_token);
       await this.setUserInfo();
-      this.$router.push({ path: "/MainHome" });
+      this.$router.push({ path: "/" });
     },
 
     // 3. 사용자 정보 조회
@@ -396,4 +423,15 @@ export default {
 .icon-spacing { /*사이드바 아이콘과 문구사이 간격*/
   margin-right: 8px; /* 오른쪽에 8px의 여백 추가 */
 }
+
+a.no-style {
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 부모 요소의 글자색 상속 */
+}
+
+a.no-style:hover {
+  text-decoration: none; /* 호버 시 밑줄 제거 */
+  color: inherit; /* 호버 시 글자색 상속 */
+}
+
 </style>
