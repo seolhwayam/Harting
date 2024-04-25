@@ -649,8 +649,8 @@ export default {
     NoticeRegister() {
       // 공지사항 등록하기
       let obj = {};
-      obj.title = this.NoticeContents;
-      obj.contents = this.NoticeTitle;
+      obj.title = this.NoticeTitle;
+      obj.contents = this.NoticeContents;
       axios
         .post("http://localhost:3000/NoticeRegister", obj)
         .then((res) => {

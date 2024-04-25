@@ -9,7 +9,8 @@ const store = createStore( {
         upPointLeverUp:'0',
         upPointCheck:'0',
         upScore:'0',
-        NoticeBoardIndex: null
+        NoticeBoardIndex: null,
+        myData:null
 
     },
     mutations: { 
@@ -37,6 +38,9 @@ const store = createStore( {
         },
         setNoticeBoardIndex(state, index) {
             state.NoticeBoardIndex = index;
+        },
+        setMyData(state, data) {
+            state.myData = data;
         }
     },
     getters: {
@@ -63,6 +67,9 @@ const store = createStore( {
         },
         getNoticeBoardIndex(state){
             return state.NoticeBoardIndex;
+        },
+        getMyData(state){
+            return state.myData;
         }
 
     }

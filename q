@@ -1,0 +1,127 @@
+[33mcommit 64c24913b8763c676ab08879bba5e1c10b4bfb27[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtest/tt[m[33m, [m[1;31morigin/test/tt[m[33m, [m[1;31morigin/se[m[33m, [m[1;32mse[m[33m)[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Thu Apr 25 14:15:55 2024 +0900
+
+    출석체크 포인트
+
+[33mcommit fbcba075109a653e1e560f6d1a29d9d764d2955c[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Thu Apr 25 13:57:20 2024 +0900
+
+    수정 중 설화
+
+[33mcommit 9b3ba75e1a3dc3d032d6eb12b331013c3410c9de[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: f474824 7c07b8a
+Author: KCM <162074788+KCM5450@users.noreply.github.com>
+Date:   Thu Apr 25 10:48:53 2024 +0900
+
+    Merge pull request #4 from seolhwayam/new
+    
+    New
+
+[33mcommit 7c07b8a864ea553708c229ec37f65ae8c793c149[m[33m ([m[1;31morigin/new[m[33m)[m
+Author: kcm <kcm5450>
+Date:   Thu Apr 25 10:44:07 2024 +0900
+
+    Feat: 최종내용
+
+[33mcommit 7288095ee98da311949b994a9650451924bac78e[m
+Merge: 799fd1d f474824
+Author: kcm <kcm5450>
+Date:   Wed Apr 24 09:54:44 2024 +0900
+
+    Merge branch 'main' into new
+
+[33mcommit 799fd1d98ac1f2f69c0beb437b06012e2a3205b7[m
+Author: kcm <kcm5450>
+Date:   Wed Apr 24 09:52:40 2024 +0900
+
+    rrrrr
+
+[33mcommit 070df655f0404c576a1075bda42b51b9ac3c0d58[m
+Author: kcm <kcm5450>
+Date:   Wed Apr 24 09:32:11 2024 +0900
+
+    re
+
+[33mcommit 761a44956e0c282863294fad269e5693fc5c7964[m
+Author: kcm <kcm5450>
+Date:   Wed Apr 24 09:14:06 2024 +0900
+
+    ddd
+
+[33mcommit f474824f0df2df5bb64815e468c284221d7d4e21[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Wed Apr 24 08:56:50 2024 +0900
+
+    합치기중
+
+[33mcommit 5d1b60d30a8e97ee1ea8f5028775f05211ac7d89[m
+Merge: 0719ac3 38a7737
+Author: kcm <kcm5450>
+Date:   Wed Apr 17 19:42:45 2024 +0900
+
+    merge
+
+[33mcommit 0719ac3907acb83b31fc585d38d6f40c2b28ad1b[m
+Author: kcm <kcm5450>
+Date:   Wed Apr 17 19:35:17 2024 +0900
+
+    Feat : First
+
+[33mcommit 38a77378e153204be0c97df5975eab16407bd6a1[m[33m ([m[1;32mseol[m[33m)[m
+Merge: 067e06e 6efa8c0
+Author: parksomi31 <162074689+parksomi31@users.noreply.github.com>
+Date:   Wed Apr 17 19:13:47 2024 +0900
+
+    Merge pull request #3 from seolhwayam/somi
+    
+    Feat:부트스트랩
+
+[33mcommit 6efa8c086ae1f7f60cb37748ca225b10ade52d3c[m[33m ([m[1;31morigin/somi[m[33m)[m
+Author: unknown <parksomi31>
+Date:   Wed Apr 17 19:11:12 2024 +0900
+
+    Feat:부트스트랩
+
+[33mcommit 067e06ef9190763a5b44a54f3c2e22c3ae17422a[m
+Merge: 18310fe bf00a87
+Author: seolhwayam <122880487+seolhwayam@users.noreply.github.com>
+Date:   Wed Apr 17 18:33:38 2024 +0900
+
+    Merge pull request #2 from seolhwayam/seol
+    
+    test_seol
+
+[33mcommit bf00a87c05e8413aa530f4bc1915f25a624f20be[m[33m ([m[1;31morigin/seol[m[33m)[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Wed Apr 17 18:32:53 2024 +0900
+
+    test_seol
+
+[33mcommit 18310fe1210fe9c7299b9a1a31772af4fba59dad[m
+Merge: 2d17a3f 8162bdd
+Author: seolhwayam <122880487+seolhwayam@users.noreply.github.com>
+Date:   Wed Apr 17 18:30:39 2024 +0900
+
+    Merge pull request #1 from seolhwayam/Feat/Che
+    
+    Feat: Test 확인
+
+[33mcommit 8162bdddc146a93e3271a0d175c79b989f8075d6[m[33m ([m[1;31morigin/Feat/Che[m[33m)[m
+Author: kcm <kcm5450>
+Date:   Wed Apr 17 18:29:19 2024 +0900
+
+    Feat: Test 확인
+
+[33mcommit 2d17a3f822a551504880c53f42264e7e6ed47a55[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Wed Apr 17 18:25:16 2024 +0900
+
+    First
+
+[33mcommit 5269015f459bbb41548366755d29fad615251164[m
+Author: seolhwayam <susung462@gmail.com>
+Date:   Wed Apr 17 18:23:52 2024 +0900
+
+    first commit

@@ -30,32 +30,43 @@
           <!-- 나머지 네비게이션 링크들 -->
         </div>
 
-        <!-- 로그인 버튼 -->
+        
+        <!-- 로그인 및 로그아웃 버튼 -->
         <div>
-          <button v-if="this.$store.getters.getKakaoUserInfo == null" @click="kakaoLogin()" class="btn btn-outline-success">로그인하기</button>
+          <button v-if="!user.nickname" @click="kakaoLogin()" class="btn btn-outline-success">로그인하기</button>
           <button v-else @click="kakaoLogout()" class="btn btn-outline-success">로그아웃</button>
-          <button  type="button" class="btn btn-outline-success"  > <i class="fas fa-cog"></i>  설정 </button>
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          
+          <!-- 설정 버튼, 모달 열기 -->
+          <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#settingsModal">
+            <i class="fas fa-cog"></i> 설정
+          </button>
         </div>
-      </div> <!-- 추가된 닫는 div -->
+      </div>
+
+      <!-- 모달 -->
+      <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="settingsModalLabel">설정</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              화면모드 <br>
+              <input type="radio" id="darkMode" value="dark" name="mode" v-model="mode"> Dark 모드
+              <input type="radio" id="lightMode" value="light" name="mode" v-model="mode"> Light 모드
+              <br>
+              음악설정 <br>
+              <input type="radio" id="musicOn" value="on" name="music" v-model="music"> On
+              <input type="radio" id="musicOff" value="off" name="music" v-model="music"> Off
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+              <button type="button" class="btn btn-primary" @click="applySettings">변경하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- 오버레이 -->
       <div
@@ -108,14 +119,23 @@
             <!--메서드 구현필요-->
           <i class="fas fa-star icon-spacing"></i><span>실험실</span>
           </div>
-          <div class="sidebar-item" @click="gomode('setting')">
-           <i class="fas fa-cog icon-spacing"></i><span>설정</span>
-          </div>
+         </div>
+         <!--회원 정보-->
+         <div v-if="user.nickname && user.email!= 'oo5450@naver.com'" > 
+            <br>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{nickname}}</h3><br>
+            <h3> &nbsp;&nbsp;&nbsp;&nbsp; LV : {{level}} </h3><br>
+            <h3> &nbsp;&nbsp;&nbsp;&nbsp; 포인트 : {{point}} </h3><br>
+            <h3> &nbsp;&nbsp;&nbsp;&nbsp; 점수 : {{score}}</h3>
+         </div>
+         <!--회원 정보-->
+         <!--관리자-->
+        <div class="sidebar-item" @click="goAdmin('test')" v-if="user.email == 'oo5450@naver.com'">
+            <!--메서드 구현필요-->
+          <span>관리자 화면 가기</span>
         </div>
-      </div>
-
-    
-      
+          <!--관리자-->
+      </div>      
     </nav>
   </div>
 </template>
@@ -123,6 +143,9 @@
 
 <script>
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 const getKakaoToken = async (code) => {
   try {
     const data = {
@@ -170,12 +193,22 @@ const getKakaoUserInfo = async () => {
 };
 
 export default {
+  name: 'CustomNavbar',
   data() {
     return {
       user: {}, //현재 유저 정보
       userInfo:{}, //db에서 가져온 유저 정보
+      mode: 'light', // 'dark' 또는 'light'
+      music: 'off', // 'on' 또는 'off'
+      audio: new Audio('/calm.mp3'),
       isSidebarVisible: false, // 사이드바 표시 상태
-       msg:''
+      info: false,
+      nickname:'',
+      level:'',
+      point:"",
+      score:'',
+      ccehck:''
+
     };
   },
    created() {
@@ -188,22 +221,34 @@ export default {
     }
   },
   methods: {
+    goAdmin(){
+         this.$router.push('/admin');
+    },
     goQuizList(){
-    this.$router.push('/QuizList');
+         if(this.$store.getters.getKakaoUserInfo.email == "oo5450@naver.com"){
+            alert("회원 로그인 후 이용 바랍니다.")
+        }else{
+              this.$router.push('/QuizList');
+        }
     },
     goRanking(){
-        if(this.$store.getters.getKakaoUserInfo == null){
-            alert("로그인 후 이용가능한 서비스 입니다.")
+        if(this.$store.getters.getKakaoUserInfo.email == "oo5450@naver.com"){
+            alert("회원 로그인 후 이용 바랍니다.")
         }else{
-             this.$router.push('/Ranking');
+              this.$router.push('/Ranking');
         }
-     
     },
     goNoteBoard(){
-      this.$router.push('/NoteBoard');
+         if(this.$store.getters.getKakaoUserInfo.email == "oo5450@naver.com"){
+            alert("회원 로그인 후 이용 바랍니다.")
+        }else{
+      this.$router.push('/NoteBoard');}
     },
     goquizNext(){
-       this.$router.push('/quizNext');
+         if(this.$store.getters.getKakaoUserInfo.email == "oo5450@naver.com"){
+            alert("회원 로그인 후 이용 바랍니다.")
+        }else{
+       this.$router.push('/quizNext');}
     },
     goMainHome(){
       this.$router.push('/');
@@ -212,11 +257,19 @@ export default {
       this.$router.push('/mode');
     },
     goNoticeBoard(){
-      this.$router.push('/NoticeBoard');
+         this.$router.push('/NoticeBoard');
     },
     goCalender(){
- this.$router.push('/calender');
+         if(this.$store.getters.getKakaoUserInfo.email == "oo5450@naver.com"){
+            alert("회원 로그인 후 이용 바랍니다.")
+        }else{
+        this.$router.push('/calender');}
     },
+
+
+
+
+
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
@@ -265,6 +318,7 @@ export default {
         profileImg: res.properties.profile_image
       };
       this.user = userInfo;
+      this.userCheck();
       this.login_log();
       this.$store.commit('setKakaoUserInfo', userInfo); // store에 유저정보 넣기
 
@@ -282,35 +336,38 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-        this.$router.push('/');
+          this.$router.push('/');
     },
-     login_log() {
+     async  login_log() {
       this.form = {
         email : this.user.email,
       };
-       axios.post('http://localhost:3000/LoginLog', this.form)
+      await axios.post('http://localhost:3000/LoginLog', this.form)
         .then((res) => {
-          if(this.user.email == "oo5450@naver.com"){
-              this.$router.push('/admin');
-          }else{
+
           if (res.data.success) {
-            if(this.userCheck()==false){
+            if(this.ccehck=='false' || this.ccehck==false){
                this.userInsert();
-          }         
-            alert('로그인 되었습니다.');
-            this.userMsg();
+            }  
+            if(this.user.email == "oo5450@naver.com"){
+              this.$router.push('/admin');
+            }
+             this.getMyINFO(); 
+             alert('로그인 되었습니다.');
             this.fnList();
+                 
+            this.userMsg();
             this.$router.push('/');
           } else {
             alert("로그인에 실패하였습니다.");
           }
-          }
+          
           
         })
         .catch((err) => {
           console.log(err);
         });
-        axios.get("http://localhost:3000/getSystem_settings")
+        await axios.get("http://localhost:3000/getSystem_settings")
         .then(res =>{
              let settings = res.data.data;
              this.$store.commit('setupPointNote', settings[0].upPointNote); //정보넣기
@@ -321,31 +378,58 @@ export default {
 
         })
     },
-    userInsert(){ 
+    async userInsert(){ 
         let obj = {};
         obj.nickname= this.user.nickname;
         obj.email=this.user.email;
         obj.profileImg=this.user.profileImg;
-        axios.post("http://localhost:3000/userInsert",obj)
+        await axios.post("http://localhost:3000/userInsert",obj)
         .then(res =>{
              console.log(res.data);
         })
     },
-    userCheck(){
+    async userCheck(){
       let obj = {} ;
       obj.email = this.user.email;
-        axios.post('http://localhost:3000/isUser',obj)
+      await  axios.post('http://localhost:3000/isUser',obj)
         .then(res => {
             console.log(res);
+            this.ccehck = res.data.result;
         });
+        
+    },
+      applySettings() {
+      if (this.mode === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+      if (this.music === 'on') {
+        this.audio.play();
+      } else {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      }
+    },
+    async getMyINFO(){
+        let obj={};
+        obj.email = this.$store.getters.getKakaoUserInfo.email;
+        await axios.post("http://localhost:3000/getSelectUserPost",obj)
+        .then(res =>{
+            console.log(res.data)
+            let data = res.data.data;
+            this.$store.commit('setMyData', data); //나의 정보 넣기
+        })
+        this.nickname =this.$store.getters.getMyData[0].nickname;
+        this.score= this.$store.getters.getMyData[0].score;
+        this.point =this.$store.getters.getMyData[0].point;
+        this.level = this.$store.getters.getMyData[0].user_rank;
     }
   }
-  
 };
-  
 </script>
 
-<style scoped>
+<style>
 /* @import "@/font-awesome-4.7.0/css/font-awesome.min.css"; */
 
 .custom-navbar .navbar {
@@ -479,6 +563,11 @@ a.no-style {
 a.no-style:hover {
   text-decoration: none; /* 호버 시 밑줄 제거 */
   color: inherit; /* 호버 시 글자색 상속 */
+}
+
+.dark-mode, .dark-mode * {
+  background-color: #121212;
+  color: white;
 }
 
 </style>

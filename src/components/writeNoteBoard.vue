@@ -51,7 +51,8 @@ export default {
             nickname: this.$store.getters.getKakaoUserInfo.nickname,
             file_name: "파일을 선택하세요.",
             form: '', //form 전송 데이터
-            message: "Hello, world"
+            message: "Hello, world",
+            upPoint:''
         }
     },
     methods: {
@@ -87,7 +88,8 @@ export default {
         })
             .then((res) => {
                 if (res.data.success) {
-                    alert('등록되었습니다.');
+                    this.getPoint();
+
                     this.fnList();
                 } else {
                     alert("실행중 실패했습니다.\n다시 이용해 주세요");
@@ -99,7 +101,27 @@ export default {
     },
         handleFileChange(e) {
             this.file_name = e.target.files[0].name;
-        }
+        },
+        async getPoint(){  // 증가할 점수 가져오기
+      await axios.get("http://localhost:3000/getSystem_settings")
+      .then(res =>{
+        let data = res.data.data;
+        this.upPoint = data[0].upPointNote; //업데이트할 점수 보관
+      })
+      this.updatePoint();
+    },
+    async updatePoint(){
+        // 점수 업데이트 하기
+        let obj = {};
+        obj.email= this.$store.getters.getKakaoUserInfo.email;
+        obj.upPoint=this.upPoint;
+        await axios.post("http://localhost:3000/upPoint",obj)
+        .then(res =>{
+            console.log(res.data);
+        })
+        alert("정보 공유 포인트" +  this.upPoint + "를 획득하였습니다!")
+    }
+
     }
 }
 </script>

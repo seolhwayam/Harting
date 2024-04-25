@@ -26,7 +26,8 @@
       </tbody>
     </table>
 </div>
- 
+
+
 
 </template>
 
@@ -64,6 +65,10 @@ export default {
       return new Date(date - tzOffset).toISOString().split("T")[0];
     },
     NoticeDetail(index){
+
+
+      
+      
       this.$store.commit('setNoticeBoardIndex', index);
       this.$router.push("/NoticeBoardDetail");
     }

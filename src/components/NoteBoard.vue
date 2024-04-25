@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(li, index) in list" :key="index" @click="NoteDetail(li.studyindex)">
+        <tr v-for="(li, index) in list" :key="index" @click="goPAY(li.studyindex)">
           <td>{{ index+1 }}</td>
           <td>{{ li.title }}</td>
           <td>{{ li.nickname }}</td>
@@ -48,11 +48,12 @@
       </li>
     </ul>
   </nav>
+
 </template>
 
 <script>
 import axios from 'axios'
-
+import Swal from 'sweetalert2';
 export default {
   name: 'GesipanBoard',
    components: {
@@ -74,6 +75,7 @@ export default {
         total_block_cnt: 0,
         total_list_cnt: 0,
         total_page_cnt: 0,
+        mypoint:'',
       },
       page: this.$route.query.page ? this.$route.query.page : 1,
       size: this.$route.query.size ? this.$route.query.size : 10,
@@ -99,12 +101,57 @@ export default {
     fnWrite() {
       this.$router.push('/writeNoteBoard');
     },
-    NoteDetail(index) {
-      this.$store.commit('setNoteIndex', index);
+    NoteDetail() { //결제완료 후
       this.$router.push('/DetailNoteBoard');
+    },
+    goPAY(index){
+        this.$store.commit('setNoteIndex', index);
+        Swal.fire({
+        title: '결제',
+        //text: this.attendance[dateString] ? '출석하시겠습니까?' : '결석하시겠습니까?',
+        html : "족보 서비스는 포인트 결제가 필요합니다.<br> 30포인트로 결제하시겠습니까?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '예',
+        cancelButtonText: '아니요',
+        reverseButtons: true // 예 아니오 버튼의 위치를 변경합니다.
+      }).then((result) => {
+        if (result.isConfirmed) {
+            this.pay();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // '아니오' 버튼이 클릭된 경우
+          // 여기에 아니오 버튼을 클릭했을 때의 동작을 추가합니다.
+        }
+      });
+    },
+    async pay(){
+      let obj={};
+        obj.email = this.$store.getters.getKakaoUserInfo.email;
+        await axios.post("http://localhost:3000/getSelectUserPost",obj)
+        .then(res =>{
+            console.log(res.data)
+            let data = res.data.data;
+            this.mypoint = data[0].point;
+        })
+        if(this.mypoint >=30){
+              let oobj = {};
+              oobj.email= this.$store.getters.getKakaoUserInfo.email;
+              oobj.downPoint=30;
+              await axios.post("http://localhost:3000/downPoint",oobj)
+              .then(res =>{
+                  console.log(res.data);
+              })  
+              alert("결제되었습니다!")   
+              this.NoteDetail();
+        }else{
+          alert("포인트가 부족합니다.")
+        }
     }
   }
-}
+        
+    }
+  
+
 </script>
 
 <style>
