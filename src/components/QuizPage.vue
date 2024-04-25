@@ -55,6 +55,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "QuizPage",
   data() {
@@ -71,84 +72,89 @@ export default {
     this.getQuiz();
   },
   methods: {
-    result(){
-      if(this.choice== this.selectedChoice){
-        alert("정답입니다~ ")
-        this.getScore();
-        
-      }else{
-        alert("오답입니다~")
+    result() {
+      if (this.choice === this.selectedChoice) {
+        Swal.fire({
+          html: "정답입니다! 점수를 획득하셨습니다★",
+          icon: "success",
+        }).then(() => {
+          this.getScore();
+        });
+      } else {
+        Swal.fire({
+          html: "오잉..틀렸어요 <br> 다시 한번 생각해보세요.",
+          icon: "error",
+        });
       }
-     
     },
-    getQuiz(){ //퀴즈 가져오기
-       axios.get("http://localhost:3000/Quiz", {
-          params: { index: this.$store.getters.getQuizIndex  }, // NoteIndex를 객체 안에 넣어 전달
-      })
-      .then(res => {
-        console.log(res)
-        let list = res.data.data; 
-        this.quiz=list[0].quiz;
-        this.answers = list[0].answer.split(",");
-        this.choice =  list[0].choice;
-      })
-      .catch(error => {
-        console.error('Error fetching QuizList:', error);
-      });
+    getQuiz() {
+      //퀴즈 가져오기
+      axios
+        .get("http://localhost:3000/Quiz", {
+          params: { index: this.$store.getters.getQuizIndex }, // NoteIndex를 객체 안에 넣어 전달
+        })
+        .then((res) => {
+          console.log(res);
+          let list = res.data.data;
+          this.quiz = list[0].quiz;
+          this.answers = list[0].answer.split(",");
+          this.choice = list[0].choice;
+        })
+        .catch((error) => {
+          console.error("Error fetching QuizList:", error);
+        });
     },
-    QuizList(){ // 퀴즈리스트로 돌아가기
-      this.$router.push('/QuizList');
+    QuizList() {
+      // 퀴즈리스트로 돌아가기
+      this.$router.push("/QuizList");
     },
-    async getScore(){ //점수 증가
-    // 증가할 점수 가져오기
-      await axios.get("http://localhost:3000/getSystem_settings")
-      .then(res =>{
-        let data = res.data.data;
-        this.upScore = data[0].upScore; //업데이트할 점수 보관
-      })
+    async getScore() {
+      //점수 증가
+      // 증가할 점수 가져오기
+      await axios
+        .get("http://localhost:3000/getSystem_settings")
+        .then((res) => {
+          let data = res.data.data;
+          this.upScore = data[0].upScore; //업데이트할 점수 보관
+        });
       this.updateScore();
     },
-      async updateScore(){
-        // 점수 업데이트 하기
-        let obj = {};
-        obj.email= this.$store.getters.getKakaoUserInfo.email;
-        obj.upS=this.upScore;
-        await axios.post("http://localhost:3000/upScore",obj)
-        .then(res =>{
-            console.log(res.data);
-        })
-        let oobj={};
-        oobj.email = this.$store.getters.getKakaoUserInfo.email;
-        await axios.post("http://localhost:3000/getSelectUserPost",oobj)
-        .then(res =>{
-            console.log(res.data)
-            let data = res.data.data;
-            this.myScore = data[0].score;
-        })
-      let num = Number(this.myScore)
+    async updateScore() {
+      // 점수 업데이트 하기
+      let obj = {};
+      obj.email = this.$store.getters.getKakaoUserInfo.email;
+      obj.upS = this.upScore;
+      await axios.post("http://localhost:3000/upScore", obj).then((res) => {
+        console.log(res.data);
+      });
+      let oobj = {};
+      oobj.email = this.$store.getters.getKakaoUserInfo.email;
+      await axios
+        .post("http://localhost:3000/getSelectUserPost", oobj)
+        .then((res) => {
+          console.log(res.data);
+          let data = res.data.data;
+          this.myScore = data[0].score;
+        });
+      let num = Number(this.myScore);
       if (num >= 0 && num <= 20) {
-          this.levelUP(0); // 점수가 0부터 20 사이인 경우 0번째 레벨업 함수 호출
+        this.levelUP(0); // 점수가 0부터 20 사이인 경우 0번째 레벨업 함수 호출
       } else if (num >= 21 && num <= 40) {
-          this.levelUP(1); // 점수가 21부터 40 사이인 경우 1번째 레벨업 함수 호출
+        this.levelUP(1); // 점수가 21부터 40 사이인 경우 1번째 레벨업 함수 호출
       } else if (num >= 41 && num <= 60) {
-          this.levelUP(2); // 점수가 41부터 60 사이인 경우 2번째 레벨업 함수 호출
+        this.levelUP(2); // 점수가 41부터 60 사이인 경우 2번째 레벨업 함수 호출
       }
-
-
     },
-    async levelUP(r){
-        let obj={};
-        obj.email = this.$store.getters.getKakaoUserInfo.email;
-        obj.rank = r;
-        await axios.post("http://localhost:3000/levelUP",obj)
-        .then(res =>{
-            console.log(res)
-        })
-    }
-     
-  }
-}
-
+    async levelUP(r) {
+      let obj = {};
+      obj.email = this.$store.getters.getKakaoUserInfo.email;
+      obj.rank = r;
+      await axios.post("http://localhost:3000/levelUP", obj).then((res) => {
+        console.log(res);
+      });
+    },
+  },
+};
 </script>
 
 
