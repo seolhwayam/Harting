@@ -6,17 +6,7 @@
   </div>
   <br />
 
-  <div style="text-align: right">
-    <button
-      type="button"
-      class="btn btn-success mr-3"
-      @click="kakaoLogout()"
-      style="padding: 10px 20px"
-    >
-      로그아웃</button
-    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </div>
+
 
   <div class="cards-container">
     <div class="row">
@@ -784,7 +774,7 @@ export default {
               html: `
             <p><strong>닉네임:</strong> ${this.list.nickname}</p>
             <p><strong>점수:</strong> ${this.list.score}</p>
-            <p><strong>회원 등급:</strong> ${this.list.user_rank}</p>
+            <p><strong>회원 레벨:</strong> ${this.list.user_rank}</p>
             <p><strong>포인트:</strong> ${this.list.point}</p>
           `,
               icon: "success",
@@ -843,7 +833,7 @@ export default {
   components: {},
 };
 </script>
-<style>
+<style scoped>
 body {
   background-image: url("@/assets/관리자.png") !important;
   background-size: cover;

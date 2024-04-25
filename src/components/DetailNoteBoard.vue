@@ -98,6 +98,7 @@ export default {
             console.error("다운로드 오류:", error);
           }
         });
+        this.$router.push("/NoteBoard");
     },
     Btn_like() {
       this.like++;

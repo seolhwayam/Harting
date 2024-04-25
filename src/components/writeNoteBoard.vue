@@ -48,7 +48,7 @@ export default {
         return {
             title: '',
             contents: '',
-            nickname: 'admin',
+            nickname: this.$store.getters.getKakaoUserInfo.nickname,
             file_name: "파일을 선택하세요.",
             form: '', //form 전송 데이터
             message: "Hello, world"

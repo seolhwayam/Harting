@@ -11,7 +11,6 @@
       <thead>
         <tr>
           <th>No</th>
-          <th>상태</th>
           <th>제목</th>
           <th>난이도</th>
         </tr>
@@ -19,7 +18,6 @@
       <tbody>
         <tr v-for="(item, index) in list" :key="item" @click="quizPage(item.quiz_id)">
           <td>{{ index + 1 }}</td>
-          <td>{{ item.Ischecked ? '해결' : '미해결' }}</td>
           <td>{{ item.quiz }}</td>
           <td>Lv.{{ item.quizlevel }}</td>
         </tr>
@@ -52,7 +50,6 @@ export default {
   },
   quizPage(index){
     this.$store.commit('setQuizIndex', index);
-    alert(index);
     this.$router.push('/QuizPage');
   }
   }
@@ -66,7 +63,7 @@ export default {
 }
 
 #quiz-container {
-  width: 60%;
+  width: 80%;
   margin: auto;
 }
 
