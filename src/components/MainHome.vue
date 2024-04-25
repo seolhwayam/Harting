@@ -318,7 +318,11 @@ export default {
   },
   methods: {
     goNoteBoard(){
-      this.$router.push('/NoteBoard');
+       if(this.$store.getters.getKakaoUserInfo == null){
+            alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
+             this.$router.push('/NoteBoard');
+        }
     },
     goRanking(){
       if(this.$store.getters.getKakaoUserInfo == null){
@@ -328,10 +332,16 @@ export default {
         }
     },
     goNoticeBoard(){
-      this.$router.push('/NoticeBoard');
+      if(this.$store.getters.getKakaoUserInfo == null){
+          alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
+          this.$router.push('/NoticeBoard');}
     },
     goCalender(){
- this.$router.push('/calender');
+      if(this.$store.getters.getKakaoUserInfo == null){
+            alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
+      this.$router.push('/calender');}
     },
     initAOS() {
       import("aos").then((AOS) => {
@@ -345,10 +355,14 @@ export default {
       this.randomTip = this.tips[randomIndex];
     },
     goQuizList(){
+      if(this.$store.getters.getKakaoUserInfo == null){
+            alert("로그인 후 이용가능한 서비스 입니다.")
+        }else{
       this.$router.push('QuizList');
     }
   },
-};
+}
+}
 </script>
 
 <style>

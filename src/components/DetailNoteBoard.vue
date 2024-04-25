@@ -1,6 +1,5 @@
 <template>
   <div>
- 
     <center>
       <div class="ranking-title-container">
         <h1 class="ranking-title">내용 상세보기</h1>
@@ -47,11 +46,9 @@
 </template>
 <script>
 import axios from "axios";
-
 export default {
   name: "DetailNoteBoard",
   components: {
-   
   },
   data() {
     return {
