@@ -32,7 +32,7 @@
         <tr style="height: 100px;">
             <th>파일</th>
             <td class="txt_cont" id="boardName">
-              <button @click="openDownloadPopup" class="download-btn">다운로드</button>
+              <input type="button" @click="openDownloadPopup" class="download-btn" value="다운로드">
               {{ file_name }}
             </td>
           </tr>
@@ -98,7 +98,7 @@ export default {
             console.error("다운로드 오류:", error);
           }
         });
-        this.$router.push("/NoteBoard");
+        //this.$router.push("/NoteBoard");
     },
     Btn_like() {
       this.like++;
