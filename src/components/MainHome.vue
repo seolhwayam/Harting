@@ -10,7 +10,7 @@
         <header>
           <div class="row justify-content-between">
             <div class="col-2">
-              <img src="@/assets/logo.png" alt="logo" />
+              <img src="@/assets/satr2.png" alt="logo" />
             </div>
           </div>
         </header>
@@ -32,7 +32,7 @@
   <!-- Study Tip Section -->
     <div class="container my-5 py-2">
       <div class="underline"></div>
-      <p class="contents_title">오늘의 동기부여</p>
+      <p class="contents_title">오늘의 한줄 문장</p>
       <div class="study-tip-container">
         <p class="study-tip">{{ randomTip }}</p>
       </div>
@@ -232,7 +232,7 @@
             alt="Anti-spam"
             class="mx-auto"
             style="width: 60px; height: auto;"
-          >
+          ><br>
           <h2 class="font-weight-bold">출석체크</h2>
           <p class="my-4">매일매일 출석체크하고 포인트 챙기기!</p>
           <button type="button" class="btn btn-outline-success" @click="goCalender">

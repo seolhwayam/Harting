@@ -58,16 +58,13 @@
       <td> Lv{{userData[4].user_rank}}</td>
       <td>{{userData[4].score}}</td>
     </tr>
-    <tr>
-  <td colspan="5"  style="text-align: center;">
-   ............
-  </td>
-</tr>
 
    <tr>
-  <td colspan="5" style="text-align: center; background-color: #ecd889;" >
+  <td colspan="5" style="text-align: center; color:#ff6347; font-size:35px;" >
+    
    <!--나의 순위는???&nbsp;&nbsp;&nbsp;100위-->
-   <img src="@/assets/변경.png" alt="동" class="medal-icon">나의 순위 {{myRank}} 위
+   <!-- <img src="@/assets/변경.png"> -->
+   [나의 순위: {{myRank}} 위]
   </td>
 </tr>
   </tbody>
@@ -175,12 +172,6 @@
   border-bottom-left-radius: 20px; /* 첫번째 셀의 왼쪽 하단 둥근 모서리 */
 }
 
-/* 테이블의 마지막 컬럼 스타일링 */
-.table tbody tr td:last-child {
-  border-top-right-radius: 20px; /* 마지막 셀의 오른쪽 상단 둥근 모서리 */
-  border-bottom-right-radius: 20px; /* 마지막 셀의 오른쪽 하단 둥근 모서리 */
-}
-
 body {
   background-color: #F5EDCD; /* 전체 화면의 배경색 */
 }
@@ -235,7 +226,7 @@ body {
     display: block;
     border-bottom: 3px solid #3da142; /* 언더라인 스타일 설정 */
     margin-bottom: -2px; /* 언더라인과의 간격 제거 */
-    width: 2000px; /* 너비 설정 */
+    width: 1700px; /* 너비 설정 */
     text-align: left; /* 텍스트 좌측 정렬 */
 }
 

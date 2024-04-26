@@ -38,6 +38,7 @@
 </template>
 <script>
 import axios from 'axios'
+import Swal from "sweetalert2";
 
 export default {
     name: 'writeNoteBoard',
@@ -110,18 +111,23 @@ export default {
       })
       this.updatePoint();
     },
-    async updatePoint(){
-        // 점수 업데이트 하기
-        let obj = {};
-        obj.email= this.$store.getters.getKakaoUserInfo.email;
-        obj.upPoint=this.upPoint;
-        await axios.post("http://localhost:3000/upPoint",obj)
-        .then(res =>{
-            console.log(res.data);
-        })
-        alert("정보 공유 포인트" +  this.upPoint + "를 획득하였습니다!")
-    }
-
+async updatePoint(){
+    // 점수 업데이트 하기
+    let obj = {};
+    obj.email = this.$store.getters.getKakaoUserInfo.email;
+    obj.upPoint = this.upPoint;
+    await axios.post("http://localhost:3000/upPoint", obj)
+    .then(res => {
+        console.log(res.data);
+    });
+    
+    Swal.fire({
+        title: "족보등록완료!",
+        text: `정보 공유 포인트 ${this.upPoint}를 획득하였습니다!`,
+        icon: "success",
+        confirmButtonText: "확인"
+    });
+}
     }
 }
 </script>

@@ -22,7 +22,7 @@
               언제든지 말씀해주세요. 별별스터디의 귀는 언제나 열려있습니다.
             </p>
             <ul class="list-unstyled">
-              <li>이메일: starstar-study@google.com</li>
+              <li>이메일: starstar-study@gmail.com</li>
               <li>전화: 1588-9999</li>
               <li>주소: 서울 서초구 서초대로 74길 33</li>
             </ul>
