@@ -1,0 +1,524 @@
+//express 설정
+const express= require('express'); //익스프레스를 설치한거 js가 읽을 수 있게 만들기
+const app = express();
+
+//파일 저장하기 관련 설정
+const multer = require('multer'); //파일저장하기
+const storage = multer.memoryStorage();
+const upload = multer({storage : storage});
+
+//cors 설정
+const cors = require('cors');
+app.use(cors()); //모든 클라이언트 접속을 허용한다.
+
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+    host: 'localhost', 
+    port: 3306, //mysql의 기본포트 3306
+    user: 'root', //DB 계정명 
+    password: 'qwe123!@#',
+    database: 'Professional'
+})
+
+connection.connect(); //구동 명령어
+
+
+//포트 설정(node start)
+app.listen(3000,function(){
+    console.log('Professional Start')
+})
+
+// 정보공유방 게시판 정보 받아와서 DB 등록하기(여기는 아직 안써도댐)
+app.post('/NoteBoardWrite', (req, res) => {
+    let title = req.body.title;
+    let contents = req.body.contents;
+    let nickname = req.body.nickname;
+    let file_name = req.body.file_name;
+    let query = 'insert into NoteBoard (title, contents, nickname, date, file_name) values (?, ?, ?, sysdate(), ?)';
+    connection.query(query, [title, contents, nickname, file_name], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(result);
+            res.status(200).json({ success: true });
+        }
+    });
+});
+
+
+//정보공유방 목록 보내주기
+app.get('/NoteBoardList',(req,res)=> { //이름도 상황에맞게 바꾸자
+    let responseData = {};
+    connection.query('SELECT title, nickname, date, `like`,studyindex FROM NoteBoard',(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+//공지사항 가져오기
+app.get('/NoticeBoard', (req, res) => {
+    let responseData = {}; // 기본 상태 설정
+    connection.query('SELECT title, date ,id FROM noticeboard', (err, rows) => {
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    });
+});
+
+
+//공지사항 상세페이지 가져오기
+app.get('/NoticeBoardDetail',(req,res)=> { 
+    let responseData = {};
+    let index = req.query.index;
+    console.log(index)
+    connection.query('SELECT title, date, contents FROM noticeboard where id= ?',[index],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+//like 업데이드 
+app.post('/NoteBoardLikeUpdate',(req,res)=> { 
+    console.log("호호", req.body);
+    let like = req.body.like;
+    let index = req.body.index;
+    connection.query('UPDATE NoteBoard SET `like` = ? where studyindex = ?;',[like,index],(err)=>{  
+        if(err) throw err;
+    })
+})
+
+
+
+
+// 로그인 기록 등록하기
+app.post('/LoginLog', (req, res) => {
+    let responseData ={};
+    let email = req.body.email;
+    let query = 'insert into log_history (email,log_date) values (?, sysdate())';
+    connection.query(query, [email], (err, res) => {
+        if (err) {
+            console.error(err);
+            responseData = true;
+        } else {
+            responseData = false;
+        }
+    });
+});
+
+// 이미지 저장하기
+app.post('/fileInput',upload.single('file_info'),(req,res)=>{
+    console.log("왔습니당")
+    console.log(req.body)
+    console.log(req.file)
+    let title = req.body.title;
+    let contents =req.body.contents;
+    let nickname =req.body.nickname;
+    let file_name =req.body.file_name;
+    let file_buffer = req.file.buffer;
+
+    let query = 'insert into NoteBoard (title, contents, nickname, date, file_name ,binary_file ) values (?, ?, ?, sysdate(), ?,?)';
+    connection.query(query, [title, contents, nickname, file_name, file_buffer], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(result);
+            res.status(200).json({ success: true });
+        }
+        
+    });
+})
+
+//정보공유방 상세페이지 가져오기
+app.get('/NoteBoardDetail',(req,res)=> { 
+    let responseData = {};
+    let index = req.query.index;
+    console.log("이것이다!")
+    connection.query('SELECT title, nickname, date, `like`,studyindex, contents, binary_file,file_name  FROM NoteBoard where studyindex= ?',[index],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data= rows.map(row => {
+                console.log(row);
+                let obj = {};
+                obj.title = row.title;
+                obj.nickname = row.nickname;
+                obj.data = row.data;
+                obj.studyindex = row.studyindex;
+                obj.contents = row.contents;
+                obj.file_name = row.file_name;
+                row.fileBuffer = row.binary_file.toString('base64');
+
+                return row;
+
+            });
+
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.json(responseData);
+    })
+})
+
+// 회원정보 등록하기
+app.post('/userInsert', (req, res) => {
+    let email = req.body.email;
+    let nickname = req.body.nickname;
+    let profileImg = req.body.profileImg;
+    let query = 'insert into user (email, nickname,photo) values (?,?,?)';
+    connection.query(query, [email,nickname,profileImg], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(result);
+            res.status(200).json({ success: true });
+        }
+    });
+});
+
+//회원 정보 가져오기
+app.get('/getUserInfo',(req,res)=> { //이름도 상황에맞게 바꾸자
+    let responseData = {};
+    connection.query('SELECT email, nickname, photo, score, user_rank, music,mode, point FROM user',(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+//회원인지 아닌지 확인
+app.post('/isUser',(req,res)=> { //이름도 상황에맞게 바꾸자
+    let email = req.body.email;
+    let responseData = {};
+    connection.query('SELECT * FROM user where email= ? ',[email],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.result='true';
+        }else{
+            responseData.result='false';
+        }
+        res.json(responseData);
+    })
+})
+
+
+//퀴즈목록 가져오기
+app.get('/QuizList', (req, res) => {
+    let responseData = {}; // 기본 상태 설정
+    connection.query('SELECT Ischecked, quiz, quizlevel, quiz_id FROM quiz', (err, rows) => {
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    });
+});
+
+
+//퀴즈내용 가져오기
+app.get('/Quiz', (req, res) => {
+    let responseData = {}; // 기본 상태 설정
+    let index = req.query.index;
+    connection.query('SELECT quiz,answer,choice FROM quiz where quiz_id=?',[index], (err, rows) => {
+        if(err) throw err;
+        if(rows[0]){
+            console.log("댄다")
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    });
+});
+
+
+//회원 포인트 증가
+app.get('/upPoint', (req, res) => {
+    let email = req.query.email;
+    let point = req.query.point;
+    connection.query('update user set POINT = POINT + ? where `EMAIL` = ?',[point,email], (err) => {
+        if(err) throw err;
+    });
+});
+
+
+
+
+
+//특정 회원 정보 가져오기
+app.get('/getSelectUser',(req,res)=> { //이름도 상황에맞게 바꾸자
+    let responseData = {};
+    let email = req.query.email;
+    console.log(email)
+    connection.query('SELECT nickname, photo, score, user_rank, music,mode, point FROM user where email=?',[email],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            console.log("회원")
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+            console.log("회dfd원")
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+
+
+// 공지사항 등록하기
+app.post('/NoticeRegister', (req, res) => {
+    let title = req.body.title;
+    let contents = req.body.contents;
+    let query = 'insert into NoticeBoard (title,contents,date) values (?,?,sysdate())';
+    connection.query(query, [title,contents], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(result);
+            res.status(200).json({ success: true });
+        }
+    });
+});
+
+// 퀴즈 등록하기
+app.post('/QuizRegister', (req, res) => {
+    let selectedLanguage = req.body.selectedLanguage;
+    let selectedLEVEL = req.body.selectedLEVEL;
+    let Quiz = req.body.Quiz;
+    let answers = req.body.answers;
+    let selecteChoice = req.body.selecteChoice;
+    let query = 'insert into quiz (language,quizLevel,quiz,answer,choice) values (?,?,?,?,?)';
+    connection.query(query, [selectedLanguage,selectedLEVEL,Quiz,answers,selecteChoice], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(result);
+            res.status(200).json({ success: true });
+        }
+    });
+});
+
+
+//systemdb 가져오기
+app.get('/getSystem_settings',(req,res)=> { 
+    let responseData = {};
+    connection.query('SELECT * FROM system_settings',(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+//점수 체계 변경하기
+app.post('/SystemRegister', (req, res) => {
+    let selectSystem = req.body.selectSystem;
+    let up = req.body.up;
+    connection.query('UPDATE system_settings SET ?? = ? WHERE id = 1', [selectSystem, up], (err, result) => {
+        if(err) {
+            console.error(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            console.log("System settings updated successfully");
+            res.status(200).send("System settings updated successfully");
+        }
+    });
+});
+
+
+// 환영인사 변경하기
+app.post('/MsgRegister', (req, res) => {
+    let msg = req.body.msg;
+    connection.query('UPDATE system_settings SET msg = ? WHERE id = 1', [msg], (err, result) => {
+        if(err) {
+            console.error(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            console.log("System settings updated successfully");
+            res.status(200).send("System settings updated successfully");
+        }
+    });
+});
+
+
+//회원별 마지막 로그 가져오기
+app.post('/loghistory',(req,res)=> { 
+    let responseData = {};
+    let email = req.body.email;
+    connection.query('SELECT log_date FROM log_history WHERE email = ?  ORDER BY log_date DESC  LIMIT 1',[email],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            console.log("불러온다!")
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+//방문자수 조회하기
+app.post('/dateCount',(req,res)=> { 
+    let responseData = {};
+    let selctedDate = req.body.selctedDate;
+    connection.query('SELECT COUNT(email) AS count FROM log_history WHERE DATE(log_date) = ?',[selctedDate],(err,rows)=>{  
+        if(err) throw err;
+        if(rows[0]){
+            console.log("불러온다!")
+            responseData.data=rows;
+            responseData.state='ok';
+        }else{
+          responseData.state='none';
+        }
+        res.json(responseData);
+    })
+})
+
+
+
+//특정 회원 정보 가져오기 post
+app.post('/getSelectUserPost', (req, res) => {
+    let responseData = {};
+    let email = req.body.email; // 클라이언트에서 POST로 전달된 데이터는 req.body를 통해 접근합니다.
+    connection.query('SELECT nickname, photo, score, user_rank, music,mode, point FROM user where email=?', [email], (err, rows) => {
+        if (err) throw err;
+        if (rows[0]) {
+            console.log("특정 회원 정보 가져오기")
+            responseData.data = rows;
+            responseData.state = 'ok';
+        } else {
+            responseData.state = 'none';
+        }
+        res.json(responseData);
+    })
+});
+
+//회원 점수 증가
+app.post('/upScore', (req, res) => {
+    let email = req.body.email;
+    let upscore = req.body.upS;
+    connection.query('update user set score = score + ? where `EMAIL` = ?',[upscore,email], (err) => {
+        if(err) throw err;
+        console.log("점수증가!!")
+        res.json("ok");
+    });
+});
+
+
+
+// 레벨 업 하기
+app.post('/levelUP', (req, res) => {
+    let email = req.body.email;
+    let rank = req.body.rank;
+    console.log(rank + email);
+    connection.query('update user set user_rank = ? where `email` = ?',[rank,email], (err) => {
+        if(err) throw err;
+        console.log("레벨업")
+        res.json("ok");
+    });
+});
+
+
+
+// 랭킹 가져오기
+app.post('/getRangking', (req, res) => {
+    let responseData = {};
+    connection.query('SELECT nickname, user_rank, score FROM user ORDER BY score DESC LIMIT 5;', (err, rows) => {
+        if (err) throw err;
+        if (rows[0]) {
+            console.log("랭킹 가져오기")
+            responseData.data = rows;
+            responseData.state = 'ok';
+        } else {
+            responseData.state = 'none';
+        }
+        res.json(responseData);
+    })
+});
+
+
+
+// 나의 순위 가져오기
+app.post('/getMyRangking', (req, res) => {
+    let responseData = {};
+    let email = req.body.email;
+    console.log(email)
+    connection.query('SELECT (SELECT COUNT(*) + 1 FROM user AS u2 WHERE u2.score > u1.score) AS my_rank FROM   user AS u1 WHERE  email = ?' ,[email], (err, rows) => {
+        if (err) throw err;
+        if (rows[0]) {
+            console.log("나의랭킹 가져오기")
+            responseData.data = rows;
+            responseData.state = 'ok';
+        } else {
+            responseData.state = 'none';
+        }
+        res.json(responseData);
+    })
+});
+
+
+//회원 포인트 증가
+app.post('/upPoint', (req, res) => {
+    let email = req.body.email;
+    let upPoint = req.body.upPoint;
+    connection.query('update user set point = point + ? where `EMAIL` = ?',[upPoint,email], (err) => {
+        if(err) throw err;
+        console.log("포인트증가!!")
+        res.json("ok");
+    });
+});
+
+
+//회원 포인트 감소
+app.post('/downPoint', (req, res) => {
+    let email = req.body.email;
+    let downPoint = req.body.downPoint;
+    connection.query('update user set point = point - ? where `EMAIL` = ?',[downPoint,email], (err) => {
+        if(err) throw err;
+        console.log("포인트감소!!")
+        res.json("ok");
+    });
+});
+
