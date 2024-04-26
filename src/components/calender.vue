@@ -1,10 +1,12 @@
 <template>
-  <div id="app">
-    <div class="ranking-title-container">
-      <h1 class="ranking-title">출석체크</h1>
-    </div>
-    <br />
 
+<center>
+  <br><br>
+<div class="ranking-title-container">
+  <h1 class="ranking-title">출석체크</h1>
+</div> </center><br>
+
+  <div id="app">
     <v-calendar
       :attributes="attributes"
       @dayclick="toggleAttendance"
@@ -15,6 +17,8 @@
 <script>
 import { Calendar } from "v-calendar";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 export default {
   name: "AttendanceCalendar",
   components: {
@@ -52,11 +56,12 @@ export default {
       };
       const dateString = getLocalDateStr(day.date); // 날짜를 YYYY-MM-DD 형식으로 변환
       this.attendance[dateString] = !this.attendance[dateString]; // 출석 상태 토글
-      alert(
-        `출석체크: ${
-          this.attendance[dateString] ? "출석입니다!" : "결석입니다!"
-        }`
-      );
+      // SweetAlert2를 사용하여 알림 표시
+      Swal.fire({
+        title: "출석체크",
+        text: this.attendance[dateString] ? "출석입니다. 포인트를 획득했습니다!" : "결석입니다!",
+        icon: this.attendance[dateString] ? "success" : "error",
+      });
       this.getPoint();
       
 
@@ -78,7 +83,7 @@ export default {
         .then(res =>{
             console.log(res.data);
         })
-        alert("출석 포인트" +  this.upPoint + "를 획득하였습니다!")
+
     }
 
     }
@@ -110,7 +115,7 @@ export default {
   display: block;
   border-bottom: 3px solid #3da142; /* 언더라인 스타일 설정 */
   margin-bottom: -2px; /* 언더라인과의 간격 제거 */
-  width: 2000px; /* 너비 설정 */
+  width: 1700px; /* 너비 설정 */
   text-align: left; /* 텍스트 좌측 정렬 */
 }
 

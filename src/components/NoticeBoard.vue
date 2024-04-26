@@ -4,7 +4,7 @@
   <br><br>
 <div class="ranking-title-container">
   <h1 class="ranking-title">공지사항</h1>
-</div> </center> <br><br><br>
+</div> </center> <br>
 
  
 <div class="board-list">
@@ -25,6 +25,7 @@
         </tr>
       </tbody>
     </table>
+    <br>
 </div>
 
 
@@ -112,7 +113,7 @@ export default {
     display: block;
     border-bottom: 3px solid #3da142; /* 언더라인 스타일 설정 */
     margin-bottom: -2px; /* 언더라인과의 간격 제거 */
-    width: 2000px; /* 너비 설정 */
+    width: 1700px; /* 너비 설정 */
     text-align: left; /* 텍스트 좌측 정렬 */
 }
 

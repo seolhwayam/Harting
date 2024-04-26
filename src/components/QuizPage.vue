@@ -55,6 +55,8 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
+
 export default {
   name: "QuizPage",
   data() {
@@ -71,16 +73,23 @@ export default {
     this.getQuiz();
   },
   methods: {
-    result(){
-      if(this.choice== this.selectedChoice){
-        alert("정답입니다~ ")
-        this.getScore();
-        
-      }else{
-        alert("오답입니다~")
-      }
-     
-    },
+ result() {
+  if (this.choice === this.selectedChoice) {
+    Swal.fire({
+      title: '정답입니다!',
+      html: '★점수를 획득했어요★',
+      icon: 'success'
+    }).then(() => {
+      this.getScore();
+    });
+  } else {
+    Swal.fire({
+      title: '오잉...오답이에요.',
+      html: '다시 한번 생각해보세요',
+      icon: 'error'
+    });
+  }
+},
     getQuiz(){ //퀴즈 가져오기
        axios.get("http://localhost:3000/Quiz", {
           params: { index: this.$store.getters.getQuizIndex  }, // NoteIndex를 객체 안에 넣어 전달
@@ -130,7 +139,7 @@ export default {
           this.levelUP(0); // 점수가 0부터 20 사이인 경우 0번째 레벨업 함수 호출
       } else if (num >= 21 && num <= 40) {
           this.levelUP(1); // 점수가 21부터 40 사이인 경우 1번째 레벨업 함수 호출
-      } else if (num >= 41 && num <= 60) {
+      } else if (num >= 41 && num <= 200) {
           this.levelUP(2); // 점수가 41부터 60 사이인 경우 2번째 레벨업 함수 호출
       }
 

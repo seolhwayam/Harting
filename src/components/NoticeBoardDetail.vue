@@ -5,7 +5,6 @@
         <h1 class="ranking-title">공지사항 내용 상세보기</h1>
       </div>
     </center> <br>
-
   <div class="AddWrap">
     <!-- <div>를 <form> 요소 밖으로 이동 -->
     <form>
@@ -32,12 +31,10 @@
       </table>
     </form>
   </div>
-
   <div class="btnWrap">
     <a href="javascript:;" @click="fnList" class="btn">목록</a>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
@@ -62,7 +59,7 @@ export default {
     },
     //상세 페이지 불러오기
     fnGetView() {
-      this.NoticeIndex = this.$store.getters.getNoticeBoardIndex; 
+      this.NoticeIndex = this.$store.getters.getNoticeBoardIndex;
       if (this.NoticeIndex == null) {
         console.log("12345");
         return;
@@ -76,30 +73,30 @@ export default {
           this.noticeDetail = res.data;
           this.title = this.noticeDetail.data[0].title;
           this.contents = this.noticeDetail.data[0].contents;
-          this.date = new Date(this.noticeDetail.data[0].date)
-              .toISOString()
-              .split("T")[0];
+          this.date = this.formatDateToLocal(this.noticeDetail.data[0].date); // 수정: date 변수를 로컬 시간대로 변환하여 저장
         })
         .catch((error) => {
           console.error("Error fetching NoteBoardDetail:", error);
         });
     },
+    formatDateToLocal(dateStr) { // 추가: dateStr을 로컬 시간대의 날짜 문자열로 변환하는 함수
+      const date = new Date(dateStr);
+      const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - userTimezoneOffset).toISOString().split("T")[0];
+    },
   },
 };
 </script>
-
 <style scoped>
 .AddWrap {
   margin: 0 auto;
   max-width: 1000px;
   padding: 20px;
 }
-
 .tbAdd {
   width: 100%;
   border-collapse: collapse;
 }
-
 .tbAdd th,
 .tbAdd td {
   border: 1px solid #ddd;
@@ -126,12 +123,11 @@ export default {
 }
 .ranking-title-container {
     display: block;
-    border-bottom: 3px solid #3da142; /* 언더라인 스타일 설정 */
+    border-bottom: 3px solid #3DA142; /* 언더라인 스타일 설정 */
     margin-bottom: -2px; /* 언더라인과의 간격 제거 */
     width: 2000px; /* 너비 설정 */
     text-align: left; /* 텍스트 좌측 정렬 */
 }
-
 .ranking-title {
     font-size: 48px; /* 글씨 크기를 48px로 설정 */
     color: #333; /* 글씨 색상을 어두운 회색으로 설정 */
@@ -141,15 +137,13 @@ export default {
      padding-left: 80px; /* 좌측 여백 설정 */
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); /* 글씨에 그림자 효과 추가 */
 }
-
 .btnWrap {
   text-align: center;
 }
-
 .btnWrap .btn {
   margin: 10px;
   padding: 10px 20px;
-  background-color: #3da142;
+  background-color: #3DA142;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -157,9 +151,7 @@ export default {
   text-decoration: none;
    font-size: 20px; /* 글꼴 크기를 24px로 조정 */
 }
-
 .btnWrap .btn:hover {
-  background-color: #2c7f29;
+  background-color: #2C7F29;
 }
-
 </style>
