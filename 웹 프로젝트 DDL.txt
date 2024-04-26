@@ -1,0 +1,75 @@
+-- professional.log_history definition
+
+CREATE TABLE `log_history` (
+  `log_date` timestamp NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`log_date`,`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- professional.noteboard definition
+
+CREATE TABLE `noteboard` (
+  `studyindex` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(500) DEFAULT NULL,
+  `contents` varchar(500) DEFAULT NULL,
+  `like` int DEFAULT '0',
+  `nickname` varchar(20) DEFAULT NULL,
+  `date` varchar(255) DEFAULT NULL,
+  `file_name` varchar(500) DEFAULT NULL,
+  `binary_file` blob,
+  PRIMARY KEY (`studyindex`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- professional.noticeboard definition
+
+CREATE TABLE `noticeboard` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `contents` text NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- professional.quiz definition
+
+CREATE TABLE `quiz` (
+  `quiz_id` int NOT NULL AUTO_INCREMENT,
+  `language` varchar(255) DEFAULT NULL,
+  `quizLevel` varchar(255) DEFAULT NULL,
+  `quiz` text,
+  `answer` varchar(255) DEFAULT NULL,
+  `choice` text,
+  `hint` text,
+  `Ischecked` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`quiz_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- professional.system_settings definition
+
+CREATE TABLE `system_settings` (
+  `id` int DEFAULT NULL,
+  `msg` varchar(255) DEFAULT NULL,
+  `upPointNote` int DEFAULT NULL,
+  `upPointLevelUp` int DEFAULT NULL,
+  `upPointCheck` int DEFAULT NULL,
+  `upScore` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- professional.`user` definition
+
+CREATE TABLE `user` (
+  `email` varchar(255) NOT NULL,
+  `nickname` varchar(20) DEFAULT NULL,
+  `photo` text,
+  `score` int DEFAULT '0',
+  `user_rank` int DEFAULT '0',
+  `music` varchar(20) DEFAULT '0',
+  `mode` varchar(20) DEFAULT '0',
+  `point` int DEFAULT '0',
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
