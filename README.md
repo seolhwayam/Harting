@@ -1,5 +1,5 @@
-# harting
-❤️ 코딩 스터디사이트 프로젝트(Harting) ❤️
+# StarStudy :: 별별스터디
+❤️ 코딩 스터디사이트 프로젝트(가칭 : Harting) ❤️
 
 🙌기술 스택🙌
 Front,Back : vue
