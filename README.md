@@ -1,4 +1,9 @@
 # harting
+❤️ 코딩 스터디사이트 프로젝트(Harting) ❤️
+
+🙌기술 스택🙌
+Front,Back : vue
+DB : MYSQL
 
 ## Project setup
 ```
