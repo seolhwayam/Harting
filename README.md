@@ -1,9 +1,9 @@
 # StarStudy :: 별별스터디
-❤️ 코딩 스터디사이트 프로젝트(가칭 : Harting) ❤️
+❤️ 코딩 스터디사이트 프로젝트(가칭 : Harting) ❤️ <BR>
 
-🙌기술 스택🙌
-Front,Back : vue
-DB : MYSQL
+🙌기술 스택🙌 <BR>
+Front,Back : vue  <BR>
+DB : MYSQL  <BR>
 
 ## Project setup
 ```
